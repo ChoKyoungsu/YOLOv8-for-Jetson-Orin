@@ -109,28 +109,20 @@ def show_camera(args, model, Object_classes, Object_colors):
 
 
 if __name__ == "__main__":
-    Object_classes = ['person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train', 'truck', 'boat', 'traffic light',
-                'fire hydrant', 'stop sign', 'parking meter', 'bench', 'bird', 'cat', 'dog', 'horse', 'sheep', 'cow',
-                'elephant', 'bear', 'zebra', 'giraffe', 'backpack', 'umbrella', 'handbag', 'tie', 'suitcase', 'frisbee',
-                'skis', 'snowboard', 'sports ball', 'kite', 'baseball bat', 'baseball glove', 'skateboard', 'surfboard',
-                'tennis racket', 'bottle', 'wine glass', 'cup', 'fork', 'knife', 'spoon', 'bowl', 'banana', 'apple',
-                'sandwich', 'orange', 'broccoli', 'carrot', 'hot dog', 'pizza', 'donut', 'cake', 'chair', 'couch',
-                'potted plant', 'bed', 'dining table', 'toilet', 'tv', 'laptop', 'mouse', 'remote', 'keyboard', 'cell phone',
-                'microwave', 'oven', 'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear',
-                'hair drier', 'toothbrush' ]
+    Object_classes = ['bus', 'crosswalk', 'left', 'right', 'straight' ]
     
-    Object_colors = list(np.random.rand(80,3)*255)
+    Object_colors = list(np.random.rand(5,3)*255)
 
     args = parser_for_model().parse_args()
     
     if args.mode == 'Original':
-        model = YOLO("Original/yolov8n.pt",  task='detect')
+        model = YOLO("Original/yolov8n_traffic.pt",  task='detect')
     
     elif args.mode == 'TensorRT-FP16':
         file_path=("FP16")
         file_list=os.listdir(file_path)
         if not any(file.endswith('.engine') for file in file_list):
-            tgtmodel = YOLO("FP16/yolov8n.pt")
+            tgtmodel = YOLO("FP16_2/yolov8n_traffic.pt")
             print("Building TensorRT-FP16 Model of YOLOv8\n")
             tgtmodel.export(format='engine', device=0, half=True)
             print("Building Complete\n")
@@ -140,7 +132,7 @@ if __name__ == "__main__":
         file_path=("FP32")
         file_list=os.listdir(file_path)
         if not any(file.endswith('.engine') for file in file_list):
-            tgtmodel = YOLO("FP32/yolov8n.pt")
+            tgtmodel = YOLO("FP32/yolov8n_traffic.pt")
             print("Building TensorRT-FP32 Model of YOLOv8\n")
             tgtmodel.export(format='engine', device=0, half=False)
             print("Building Complete\n")
